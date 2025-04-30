@@ -1,5 +1,6 @@
 from api import *
 import gamers.randomer
+import gamers.tit_for_tat
 
 
 class GameCore:
@@ -108,9 +109,10 @@ if __name__ == "__main__":
 
     gamer1 = gamers.randomer.RandomGamer()
     gamer2 = ExampleGamer_BetrayLover()
+    gamer3 = gamers.tit_for_tat.TitForTat()
 
     # 创建博弈核心实例
-    game_core = GameCore(gamer1, gamer2, game_rounds=100)
+    game_core = GameCore(gamer3, gamer1, game_rounds=100)
 
     # 开始博弈
     game_core.start()

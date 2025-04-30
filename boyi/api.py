@@ -19,6 +19,9 @@ class StateInfo(namedtuple("StateInfo", ["s", "p"])):
     p: 对方的决策
     """
 
+    s: Decision  # 自己的决策
+    p: Decision  # 对方的决策
+
     def __str__(self):
         return f"状态({self.s}, {self.p})"
 
@@ -54,6 +57,7 @@ class GameStates:
         """
         self.state_info.append(state_info)
 
+
 class GamerInterface(ABC):
     """
     博弈者的接口类
@@ -63,7 +67,7 @@ class GamerInterface(ABC):
         self.name = name  # 博弈者名称
 
     @abstractmethod
-    def decide(self, game_state) -> Decision:
+    def decide(self, game_states: GameStates) -> Decision:
         """
         决策函数，返回博弈者的决策
         :param game_state: 当前博弈状态
@@ -80,7 +84,7 @@ class ExampleGamer_CooperationLover(GamerInterface):
     def __init__(self, name="CooperationLover"):
         super().__init__(name)
 
-    def decide(self, game_state) -> Decision:
+    def decide(self, game_states) -> Decision:
         """
         示例决策函数，简单返回合作
         :param game_state: 当前博弈状态
@@ -97,7 +101,7 @@ class ExampleGamer_BetrayLover(GamerInterface):
     def __init__(self, name="BetrayLover"):
         super().__init__(name)
 
-    def decide(self, game_state) -> Decision:
+    def decide(self, game_states) -> Decision:
         """
         示例决策函数，简单返回背叛
         :param game_state: 当前博弈状态
