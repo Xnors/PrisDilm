@@ -1,6 +1,10 @@
+__import__("sys").path.append(".")
+__import__("sys").path.append("./boyi")
+
+
 from api import *
-import gamers.randomer
-import gamers.tit_for_tat
+from gamers import randomer
+from gamers import tit_for_tat
 
 
 class GameCore:
@@ -16,7 +20,12 @@ class GameCore:
 
     """
 
-    def __init__(self, gamer1: GamerInterface, gamer2: GamerInterface, game_rounds=10):
+    def __init__(
+        self,
+        gamer1: GamerInterface,
+        gamer2: GamerInterface,
+        game_rounds=10,
+    ):
         self.gamer1 = gamer1  # 玩家1
         self.gamer2 = gamer2  # 玩家2
         self.game_rounds = game_rounds
