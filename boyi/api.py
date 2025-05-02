@@ -12,18 +12,24 @@ class Decision(Enum):
         return f"决策({self.name})"
 
 
-class StateInfo(namedtuple("StateInfo", ["s", "p"])):
-    """
-    博弈状态信息类, 包含双方决策信息
-    s: 自己的决策
-    p: 对方的决策
-    """
-
-    s: Decision  # 自己的决策
-    p: Decision  # 对方的决策
+class WhoAmI(Enum):
+    GAMER1 = auto()  # 玩家1
+    GAMER2 = auto()  # 玩家2
 
     def __str__(self):
-        return f"状态({self.s}, {self.p})"
+        return f"我方为({self.name})"
+
+
+class StateInfo(namedtuple("StateInfo", ["p1", "p2"])):
+    """
+    博弈状态信息类, 包含双方决策信息
+    """
+
+    p1: Decision
+    p2: Decision
+
+    def __str__(self):
+        return f"状态({self.p1}, {self.p2})"
 
 
 class GameStates:
@@ -67,7 +73,7 @@ class GamerInterface(ABC):
         self.name = name  # 博弈者名称
 
     @abstractmethod
-    def decide(self, game_states: GameStates) -> Decision:
+    def decide(self, game_states: GameStates, whoami: WhoAmI) -> Decision:
         """
         决策函数，返回博弈者的决策
         :param game_state: 当前博弈状态

@@ -1,5 +1,4 @@
 from boyi.api import *
-import random
 
 
 class TitForTat(GamerInterface):
@@ -12,9 +11,13 @@ class TitForTat(GamerInterface):
     def __init__(self, name="TitForTat"):
         super().__init__(name)
 
-    def decide(self, game_states) -> Decision:
+    def decide(self, game_states, whoami) -> Decision:
         if len(game_states.state_info) == 0:
             # 第一次博弈，选择合作
             return Decision.COOPERATE
-        last_deci = game_states.state_info[-1].p
-        return last_deci 
+        if whoami == WhoAmI.GAMER1:
+            last_deci = game_states.state_info[-1].p2
+            return last_deci
+        else:
+            last_deci = game_states.state_info[-1].p1
+            return last_deci

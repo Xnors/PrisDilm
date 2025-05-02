@@ -43,8 +43,8 @@ class SingleGameCore:
         }
         """
         for i in range(self.game_rounds):
-            decision1 = self.gamer1.decide(self.game_states)
-            decision2 = self.gamer2.decide(self.game_states)
+            decision1 = self.gamer1.decide(self.game_states, whoami=WhoAmI.GAMER1)
+            decision2 = self.gamer2.decide(self.game_states, whoami=WhoAmI.GAMER2)
 
             self._calc_score(decision1, decision2)
 
@@ -137,11 +137,10 @@ class GameCore:
     def __init__(self, gamers_list: list[GamerInterface], every_game_rounds=10):
         self.gamers_list = gamers_list
         self.every_game_rounds = every_game_rounds
+        self.results: list[dict[str, int]] = []
 
     def start(self):
         games_iter = product(self.gamers_list, repeat=2)
-
-        results: list[dict[str, int]] = []
 
         for i in games_iter:
             gamer1, gamer2 = i
@@ -149,10 +148,56 @@ class GameCore:
                 gamer1, gamer2, game_rounds=self.every_game_rounds
             )
             result: dict[str, int] = game_core.start(show_states=False)
-            results.append(result)
+            self.results.append(result)
             print(
                 f"博弈者: {gamer1.name} vs {gamer2.name}, 结果: {result['stat']}, {gamer1.name}得分: {result['gamer1_score']}, {gamer2.name}得分: {result['gamer2_score']}"
             )
+
+        return self.results
+
+    def plot(self):
+        """
+        画出博弈结果, 热力图, 使用灰度图像, 不要用 numpy
+        """
+        print(self.results)
+        import matplotlib.pyplot as plt
+
+        # 计算博弈结果
+        results = self.results
+        gamers_num = len(self.gamers_list)
+        score_matrix = [[0 for _ in range(gamers_num)] for _ in range(gamers_num)]
+
+        # 填充 score_matrix
+        for k, result in enumerate(results):
+            gamer1, gamer2 = list(product(self.gamers_list, repeat=2))[k]
+            i = self.gamers_list.index(gamer1)
+            j = self.gamers_list.index(gamer2)
+            score_matrix[i][j] = result["gamer1_score"]
+
+        # 画出灰度热力图
+        plt.imshow(score_matrix, cmap="gray", interpolation="nearest")
+        plt.colorbar()
+        plt.xticks(range(gamers_num), [g.name for g in self.gamers_list], rotation=15)
+        plt.yticks(range(gamers_num), [g.name for g in self.gamers_list])
+        plt.title("RESULTS")
+
+        # 在色块上添加数字
+        for i in range(gamers_num):
+            for j in range(gamers_num):
+                plt.text(
+                    j,
+                    i,
+                    f"{score_matrix[i][j]}",
+                    ha="center",
+                    va="center",
+                    color=(
+                        "yellow"
+                        if score_matrix[i][j] < (self.every_game_rounds * 2.5)
+                        else "black"
+                    ),
+                )
+
+        plt.show()
 
 
 if __name__ == "__main__":
