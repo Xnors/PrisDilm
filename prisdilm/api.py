@@ -25,8 +25,8 @@ class StateInfo(namedtuple("StateInfo", ["p1", "p2"])):
     博弈状态信息类, 包含双方决策信息
     """
 
-    p1: Decision
-    p2: Decision
+    p1: Decision # 玩家1的决策
+    p2: Decision # 玩家2的决策
 
     def __str__(self):
         return f"状态({self.p1}, {self.p2})"

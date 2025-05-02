@@ -1,3 +1,4 @@
+from typing import Literal
 from .api import *
 from .gamers import randomer
 from .gamers import tit_for_tat
@@ -31,7 +32,7 @@ class SingleGameCore:
         self.gamer2_score = 0
         self.is_game_over = False
 
-    def start(self, show_states=False):
+    def start(self, show_states=False) -> dict[str, int]:
         """
         开始博弈
 
@@ -56,7 +57,7 @@ class SingleGameCore:
             if self.is_game_over:
                 break
 
-        win_fail_signal = self.summary(print_out_states=show_states)
+        win_fail_signal = self.summary(print_out=show_states)
 
         return {
             "gamer1_score": self.gamer1_score,
@@ -95,7 +96,7 @@ class SingleGameCore:
                 {decision1.value == Decision.BETRAY.value and decision2 == Decision.BETRAY.value}"
             )
 
-    def summary(self, print_out_states=True):
+    def summary(self, print_out=True) -> Literal[1] | Literal[2] | Literal[0]:
         """
         获取博弈结果
 
@@ -106,16 +107,16 @@ class SingleGameCore:
         """
 
         def output_when_could(s, *args, **kwargs):
-            if print_out_states:
+            if print_out:
                 print(s, *args, **kwargs)
 
-        if print_out_states:
-            self.game_states.print_out()  # 打印博弈状态信息
+        self.game_states.print_out()  # 打印博弈状态信息
 
-            output_when_could(f"玩家1: {self.gamer1.name}, 玩家2: {self.gamer2.name}")
-            output_when_could(
-                f"博弈结束，\n{self.gamer1.name}得分: {self.gamer1_score}, {self.gamer2.name}得分: {self.gamer2_score}"
-            )
+        output_when_could(f"玩家1: {self.gamer1.name}, 玩家2: {self.gamer2.name}")
+        output_when_could(
+            f"博弈结束，\n{self.gamer1.name}得分: {self.gamer1_score}, {self.gamer2.name}得分: {self.gamer2_score}"
+        )
+
         if self.gamer1_score > self.gamer2_score:
             output_when_could(f"{self.gamer1.name}获胜")
             return 1
@@ -214,7 +215,11 @@ class GameCore:
         sorted_scores = sorted(total_scores.items(), key=lambda x: x[1], reverse=True)
 
         # 画柱状图
-        ax2.bar([x[0] for x in sorted_scores], [x[1] for x in sorted_scores], color="skyblue")
+        ax2.bar(
+            [x[0] for x in sorted_scores],
+            [x[1] for x in sorted_scores],
+            color="skyblue",
+        )
         ax2.set_xlabel("Strategies")
         ax2.set_ylabel("Total Scores")
         ax2.set_title("Total Scores by Strategy")
