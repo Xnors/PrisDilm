@@ -1,4 +1,3 @@
-__import__("sys").path.append(".")
 from boyi.api import *
 import random
 

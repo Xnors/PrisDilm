@@ -102,7 +102,7 @@ class GameCore:
             f"博弈结束，\n{self.gamer1.name}得分: {self.gamer1_score}, {self.gamer2.name}得分: {self.gamer2_score}"
         )
         if self.gamer1_score > self.gamer2_score:
-            print(f"{self.gamer2.name}获胜")
+            print(f"{self.gamer1.name}获胜")
             return 1
         elif self.gamer1_score < self.gamer2_score:
             print(f"{self.gamer2.name}获胜")
@@ -117,7 +117,6 @@ if __name__ == "__main__":
     import gamers
 
     gamer1 = gamers.randomer.RandomGamer()
-    gamer2 = ExampleGamer_BetrayLover()
     gamer3 = gamers.tit_for_tat.TitForTat()
 
     # 创建博弈核心实例
