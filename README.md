@@ -28,7 +28,7 @@ main.py                  # 项目入口，运行博弈模拟
 1. 确保已安装 Python 3.11 或更高版本。
 2. 克隆项目到本地：
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/Xnors/PrisDilm.git
     cd PrisDilm
     ```
 3. 安装依赖：
