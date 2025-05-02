@@ -1,4 +1,3 @@
-__import__("sys").path.append(".")
 from boyi.api import *
 import random
 
@@ -10,7 +9,7 @@ class TitForTat(GamerInterface):
     该博弈者在第一次博弈中选择合作，之后的每次博弈都选择与对方上次的决策相同的策略
     """
 
-    def __init__(self, name="Random"):
+    def __init__(self, name="TitForTat"):
         super().__init__(name)
 
     def decide(self, game_states) -> Decision:
