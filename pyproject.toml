@@ -1,7 +1,14 @@
 [project]
-name = "boyi"
+name = "PrisDilm"
 version = "0.1.0"
-description = "Add your description here"
+description = "python脚本模拟各种策略在囚徒困境里面的博弈结果的项目"
 readme = "README.md"
+authors = [{ name = "Fexcode", email = "2734664632@qq.com" }]
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "matplotlib>=3.10.1",
+]
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true

@@ -1,4 +1,4 @@
-from boyi.api import *
+from prisdilm.api import *
 
 
 class ExampleGamer_CooperationLover(GamerInterface):

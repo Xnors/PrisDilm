@@ -1,4 +1,4 @@
-from boyi import gamers, game_core, api
+from prisdilm import gamers, game_core, api
 
 
 def main():
