@@ -157,7 +157,7 @@ class GameCore:
 
     def plot(self):
         """
-        画出博弈结果, 热力图, 使用灰度图像, 不要用 numpy
+        画出博弈结果, 热力图和柱状图, 使用灰度图像, 不要用 numpy, 并将两者画在同一张图中
         """
         print(self.results)
         import matplotlib.pyplot as plt
@@ -174,17 +174,21 @@ class GameCore:
             j = self.gamers_list.index(gamer2)
             score_matrix[i][j] = result["gamer1_score"]
 
+        # 创建画布
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
         # 画出灰度热力图
-        plt.imshow(score_matrix, cmap="gray", interpolation="nearest")
-        plt.colorbar()
-        plt.xticks(range(gamers_num), [g.name for g in self.gamers_list], rotation=15)
-        plt.yticks(range(gamers_num), [g.name for g in self.gamers_list])
-        plt.title("RESULTS")
+        im = ax1.imshow(score_matrix, cmap="gray", interpolation="nearest")
+        ax1.set_title("RESULTS (Heatmap)")
+        ax1.set_xticks(range(gamers_num))
+        ax1.set_yticks(range(gamers_num))
+        ax1.set_xticklabels([g.name for g in self.gamers_list], rotation=15)
+        ax1.set_yticklabels([g.name for g in self.gamers_list])
 
         # 在色块上添加数字
         for i in range(gamers_num):
             for j in range(gamers_num):
-                plt.text(
+                ax1.text(
                     j,
                     i,
                     f"{score_matrix[i][j]}",
@@ -197,6 +201,28 @@ class GameCore:
                     ),
                 )
 
+        fig.colorbar(im, ax=ax1)
+
+        # 计算每种策略的总得分
+        total_scores = {g.name: 0 for g in self.gamers_list}
+        for k, result in enumerate(results):
+            gamer1, gamer2 = list(product(self.gamers_list, repeat=2))[k]
+            total_scores[gamer1.name] += result["gamer1_score"]
+            total_scores[gamer2.name] += result["gamer2_score"]
+
+        # 按总得分排序
+        sorted_scores = sorted(total_scores.items(), key=lambda x: x[1], reverse=True)
+
+        # 画柱状图
+        ax2.bar([x[0] for x in sorted_scores], [x[1] for x in sorted_scores], color="skyblue")
+        ax2.set_xlabel("Strategies")
+        ax2.set_ylabel("Total Scores")
+        ax2.set_title("Total Scores by Strategy")
+        ax2.set_xticks(range(len(sorted_scores)))
+        ax2.set_xticklabels([x[0] for x in sorted_scores], rotation=15)
+
+        # 显示图表
+        plt.tight_layout()
         plt.show()
 
 
