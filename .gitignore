@@ -9,4 +9,7 @@ wheels/
 # Virtual environments
 .venv
 
+# cache files
 .mypy_cache
+.ruff_cache
+.VSCodeCounter

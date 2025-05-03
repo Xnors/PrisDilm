@@ -82,12 +82,24 @@ class MyCustomGamer(GamerInterface):
 
 然后将其添加到 `gamers/__init__.py` 的 `all_gamers` 列表中。
 
+> 注: 请将对您的博弈策略的介绍放到 `docs/GAMERS.md` 中, 以便查阅.
+
 ## 可视化结果
 
 运行后，程序会生成热力图和柱状图，展示不同策略之间的博弈结果。
 
 示例:
 ![Example](./docs/assets/image.png)
+
+## 文档
+
+- [开发文档](./docs/DEVDOC.md)
+
+  介绍了项目的接口, 运行方法, 自定义博弈者/贡献博弈策略的方法 等.
+
+- [博弈者文档](./docs/GAMERS.md)
+
+  介绍了已实现的各种博弈者策略
 
 ## 贡献
 
