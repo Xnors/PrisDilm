@@ -12,12 +12,9 @@ class TitForTat(GamerInterface):
         super().__init__(name)
 
     def decide(self, game_states, whoami) -> Decision:
-        if len(game_states.state_info) == 0:
+        if len(game_states) == 0:
             # 第一次博弈，选择合作
             return Decision.COOPERATE
-        if whoami == WhoAmI.GAMER1:
-            last_deci = game_states.state_info[-1].p2
-            return last_deci
-        else:
-            last_deci = game_states.state_info[-1].p1
-            return last_deci
+
+        last_deci = game_states[-1].get_other_decision(whoami)
+        return last_deci

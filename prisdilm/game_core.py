@@ -24,8 +24,8 @@ class SingleGameCore:
         gamer2: GamerInterface,
         game_rounds=10,
     ):
-        self.gamer1 = gamer1  # 玩家1
-        self.gamer2 = gamer2  # 玩家2
+        self.gamer1 = gamer1  # 博弈者1
+        self.gamer2 = gamer2  # 博弈者2
         self.game_rounds = game_rounds
         self.game_states = GameStates([])  # 博弈状态信息列表
         self.gamer1_score = 0
@@ -101,8 +101,8 @@ class SingleGameCore:
         获取博弈结果
 
         :return: 返回博弈结果
-        1: 玩家1获胜
-        2: 玩家2获胜
+        1: 博弈者1获胜
+        2: 博弈者2获胜
         0: 平局
         """
 
@@ -110,9 +110,10 @@ class SingleGameCore:
             if print_out:
                 print(s, *args, **kwargs)
 
-        self.game_states.print_out()  # 打印博弈状态信息
+        if print_out:
+            self.game_states.print_out()  # 打印博弈状态信息
 
-        output_when_could(f"玩家1: {self.gamer1.name}, 玩家2: {self.gamer2.name}")
+        output_when_could(f"博弈者1: {self.gamer1.name}, 博弈者2: {self.gamer2.name}")
         output_when_could(
             f"博弈结束，\n{self.gamer1.name}得分: {self.gamer1_score}, {self.gamer2.name}得分: {self.gamer2_score}"
         )
@@ -160,7 +161,6 @@ class GameCore:
         """
         画出博弈结果, 热力图和柱状图, 使用灰度图像, 不要用 numpy, 并将两者画在同一张图中
         """
-        print(self.results)
         import matplotlib.pyplot as plt
 
         # 计算博弈结果

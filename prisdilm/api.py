@@ -13,8 +13,8 @@ class Decision(Enum):
 
 
 class WhoAmI(Enum):
-    GAMER1 = auto()  # 玩家1
-    GAMER2 = auto()  # 玩家2
+    GAMER1 = auto()  # 博弈者1
+    GAMER2 = auto()  # 博弈者2
 
     def __str__(self):
         return f"我方为({self.name})"
@@ -25,11 +25,37 @@ class StateInfo(namedtuple("StateInfo", ["p1", "p2"])):
     博弈状态信息类, 包含双方决策信息
     """
 
-    p1: Decision # 玩家1的决策
-    p2: Decision # 玩家2的决策
+    p1: Decision  # 博弈者1的决策
+    p2: Decision  # 博弈者2的决策
 
     def __str__(self):
         return f"状态({self.p1}, {self.p2})"
+
+    def get_own_decision(self, whoami: WhoAmI) -> Decision:
+        """
+        获取指定博弈者的决策
+        :param whoami: 指定博弈者
+        :return: 指定博弈者的决策
+        """
+        if whoami == WhoAmI.GAMER1:
+            return self.p1
+        elif whoami == WhoAmI.GAMER2:
+            return self.p2
+        else:
+            raise ValueError("whoami参数错误")
+
+    def get_other_decision(self, whoami: WhoAmI) -> Decision:
+        """
+        获取另一博弈者的决策
+        :param whoami: 指定博弈者
+        :return: 另一博弈者的决策
+        """
+        if whoami == WhoAmI.GAMER1:
+            return self.p2
+        elif whoami == WhoAmI.GAMER2:
+            return self.p1
+        else:
+            raise ValueError("whoami参数错误")
 
 
 class GameStates:
@@ -40,13 +66,19 @@ class GameStates:
     def __init__(self, state_info: list[StateInfo] | None = None):
         if state_info is None:
             state_info = []
-        self.state_info = state_info  # 博弈状态信息
+        self.state_info: list[StateInfo] = state_info  # 博弈状态信息
 
     def __str__(self):
         s = ""
         for i in self.state_info:
             s += str(i) + ","
         return f"博弈状态({s})"
+
+    def __getitem__(self, item):
+        return self.state_info[item]
+
+    def __len__(self):
+        return len(self.state_info)
 
     def print_out(self):
         """

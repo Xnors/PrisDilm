@@ -24,25 +24,41 @@ class Decision(Enum):
 from enum import Enum, auto
 
 class WhoAmI(Enum):
-    GAMER1 = auto()  # 玩家1
-    GAMER2 = auto()  # 玩家2
+    GAMER1 = auto()  # 博弈者1
+    GAMER2 = auto()  # 博弈者2
 ```
 
 ### 3. StateInfo 博弈状态 `collections.namedtuple("StateInfo", ["p1", "p2"])`
 
-> **单次** 博弈状态信息，包括两个玩家的决策
+> **单次** 博弈状态信息，包括两个博弈者的决策
 
 ```python
 from collections import namedtuple
 
 class StateInfo(namedtuple("StateInfo", ["p1", "p2"])):
-    p1: Decision # 玩家1的决策
-    p2: Decision # 玩家2的决策
+    p1: Decision # 博弈者1的决策
+    p2: Decision # 博弈者2的决策
+    def get_own_decision(self, whoami: WhoAmI) -> Decision: ...
+    def get_other_decision(self, whoami: WhoAmI) -> Decision:
 ```
+
+- `p1` 博弈者 1 的决策
+- `p2` 博弈者 2 的决策
+- `get_own_decision(self, whoami: WhoAmI) -> Decision`
+
+  根据己方博弈方序号获取当前博弈者的决策
+
+- `get_other_decision(self, whoami: WhoAmI) -> Decision`
+
+  根据己方博弈方序号获取对手的决策
+
+> `get_own_decision` 和 `get_other_decision` 方法可以简化代码, 使得博弈者的决策更加简单, 不再需要判断博弈者序号, 直接获取决策即可
 
 ### 4. GameStates 博弈状态序列
 
 > 博弈状态类, 包含曾经的所有双方决策信息
+>
+> 注: 此类实现了 `__getitem__` 和 `__len__` 方法, 可以直接通过索引访问博弈状态信息, 也可以通过 `len` 函数获取博弈状态数量
 
 ```python
 class GameStates:
@@ -139,8 +155,8 @@ class SingleGameCore:
         Literal[1] | Literal[2] | Literal[0]
     ```
 
-    - `1` 玩家 1 胜利
-    - `2` 玩家 2 胜利
+    - `1` 博弈者 1 胜利
+    - `2` 博弈者 2 胜利
     - `0` 平局
 
 ### 2. GameCore 所有博弈策略竞技场
@@ -178,7 +194,7 @@ class GameCore:
 
   > 统计图包括热力图和柱状图
   >
-  > - 热力图: 展示每场博弈的胜负情况, 左边为玩家一,它所在的横排表示博弈者一和下方各个对手博弈的得分
+  > - 热力图: 展示每场博弈的胜负情况, 左边为博弈者一,它所在的横排表示博弈者一和下方各个对手博弈的得分
   > - 柱状图: 展示每个博弈者的总得分
 
 ---
