@@ -28,3 +28,19 @@
 - **name:** Predictive
 - **author:** [Fexcode](https://github.com/Fexcode)
 - **create_at:** 2025.5.3
+
+## TwoForOne `two_for_one.py`
+
+一报还两报博弈者，该博弈者在第一次博弈中选择合作，之后只有对手连续两次选择背叛才在下一轮选择背叛。
+
+- **name:** TwoForOne
+- **author:** [Fexcode](https://github.com/Fexcode)
+- **create_at:** 2025.5.5
+
+## TwoForOne_ButLoveBetray `two_for_one.py`
+
+一报还两报博弈者类变体，继承自 GamerInterface。该博弈者在第一次博弈中选择合作，之后只有对手连续两次选择背叛才在下一轮选择背叛，但是在对手连续两次选择合作时，会选择背叛。
+
+- **name:** TwoForOne_B
+- **author:** [Fexcode](https://github.com/Fexcode)
+- **create_at:** 2025.5.5
