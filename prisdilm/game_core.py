@@ -23,14 +23,22 @@ class SingleGameCore:
         gamer1: GamerInterface,
         gamer2: GamerInterface,
         game_rounds=10,
+        states_limit: int | None = None,
     ):
+        """
+        :param gamer1: 博弈者1
+        :param gamer2: 博弈者2
+        :param game_rounds: 博弈回合数
+        :param states_limit: 博弈状态信息列表的最大长度, 如果为None, 则不限制
+        """
         self.gamer1 = gamer1  # 博弈者1
         self.gamer2 = gamer2  # 博弈者2
         self.game_rounds = game_rounds
-        self.game_states = GameStates([])  # 博弈状态信息列表
         self.gamer1_score = 0
         self.gamer2_score = 0
         self.is_game_over = False
+        self.states_limit: int | None = states_limit
+        self.game_states = GameStates(states_limit=states_limit)  # 博弈状态信息列表
 
     def start(self, show_states=False) -> dict[str, int]:
         """
@@ -136,10 +144,22 @@ class GameCore:
     让所有博弈方互相博弈
     """
 
-    def __init__(self, gamers_list: list[GamerInterface], every_game_rounds=10):
+    def __init__(
+        self,
+        gamers_list: list[GamerInterface],
+        every_game_rounds: int = 10,
+        states_limit: int | None = None,
+    ):
+        """
+        :param gamers_list: 博弈者列表
+        :param every_game_rounds: 每场比赛的回合数
+        :param states_limit: 博弈状态信息列表的最大长度, 如果为None, 则不限制
+        """
         self.gamers_list = gamers_list
         self.every_game_rounds = every_game_rounds
         self.results: list[dict[str, int]] = []
+
+        self.states_limit: int | None = states_limit
 
     def start(self):
         games_iter = product(self.gamers_list, repeat=2)
@@ -147,7 +167,10 @@ class GameCore:
         for i in games_iter:
             gamer1, gamer2 = i
             game_core = SingleGameCore(
-                gamer1, gamer2, game_rounds=self.every_game_rounds
+                gamer1,
+                gamer2,
+                game_rounds=self.every_game_rounds,
+                states_limit=self.states_limit,
             )
             result: dict[str, int] = game_core.start(show_states=False)
             self.results.append(result)

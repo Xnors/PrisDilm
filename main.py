@@ -2,7 +2,9 @@ from prisdilm import gamers, game_core
 
 
 def main():
-    gc = game_core.GameCore(gamers_list=gamers.all_gamers, every_game_rounds=100)
+    gc = game_core.GameCore(
+        gamers_list=gamers.all_gamers, every_game_rounds=10000, states_limit=100
+    )
 
     # 开始博弈
     gc.start()

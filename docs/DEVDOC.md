@@ -62,10 +62,21 @@ class StateInfo(namedtuple("StateInfo", ["p1", "p2"])):
 
 ```python
 class GameStates:
-    def __init__(self, state_info: list[StateInfo] | None = None): ...
+    def __init__(self, state_info: list[StateInfo] | None = None, states_limit: int | None = None): ...
     def print_out(self): ...
     def append(self, state_info: StateInfo): ...
 ```
+
+#### `GameStates`参数说明
+
+- `state_info` 博弈状态序列, 类型为 `list[StateInfo] | None`
+  为了避免不可预见的 BUG, 初始化空状态列表时, 请使用 `None` 而不是 `[]`, 其中 `None` 是默认值
+- `states_limit` 博弈状态序列最大长度, 若为 `None` 则表示无限制
+  > 注意: <br>
+  > 如果你初始化了一个非空状态列表, 且非空列表长度大于 `states_limit`, 那么列表最大长度就是初始化时候的长度, 除非你手动修改对象内部属性(当然,这是不安全的) <br>
+  > 这个类的逻辑是在 `append` 方法中判断是否超出最大长度, 超出则删除最早的状态信息
+
+#### 方法说明
 
 - `print_out(self)`
 
@@ -114,6 +125,7 @@ class SingleGameCore:
         gamer1: GamerInterface,
         gamer2: GamerInterface,
         game_rounds=10,
+        states_limit: int | None = None,
     ): ...
     def start(self, show_states=False) -> dict[str, int]: ...
     def summary(self, print_out=True) -> Literal[1] | Literal[2] | Literal[0]: ...
@@ -124,6 +136,7 @@ class SingleGameCore:
 - `gamer1` 博弈者 1
 - `gamer2` 博弈者 2
 - `game_rounds` 博弈轮数
+- `states_limit` 博弈状态序列最大长度, 若为 `None` 则表示无限制, 详见 [`states_limit 参数说明`](#gamestates参数说明)
 
 #### 方法说明
 
@@ -166,7 +179,7 @@ class SingleGameCore:
 
 ```python
 class GameCore:
-    def __init__(self, gamers_list: list[GamerInterface], every_game_rounds=10):
+    def __init__(self, gamers_list: list[GamerInterface], every_game_rounds=10, states_limit: int | None = None,):
         ...
         self.results: list[dict[str, int]] = []
 
@@ -179,6 +192,7 @@ class GameCore:
 
 - `gamers_list` 博弈者列表
 - `every_game_rounds` 每场比赛的轮数
+- `states_limit` 博弈状态序列最大长度, 若为 `None` 则表示无限制, 详见 [`states_limit 参数说明`](#gamestates参数说明)
 
 #### 方法说明
 

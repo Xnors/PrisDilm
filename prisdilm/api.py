@@ -63,10 +63,18 @@ class GameStates:
     博弈状态类, 包含曾经的所有双方决策信息
     """
 
-    def __init__(self, state_info: list[StateInfo] | None = None):
+    def __init__(
+        self, state_info: list[StateInfo] | None = None, states_limit: int | None = None
+    ):
+        """
+        :param state_info: 博弈状态信息列表
+        :param states_limit: 博弈状态信息的最大长度, 默认为None, 表示无限制
+        """
         if state_info is None:
             state_info = []
         self.state_info: list[StateInfo] = state_info  # 博弈状态信息
+
+        self.states_limit = states_limit  # 博弈状态信息的最大长度
 
     def __str__(self):
         s = ""
@@ -93,6 +101,10 @@ class GameStates:
         添加博弈状态信息
         :param state_info: 博弈状态信息
         """
+        if (self.states_limit is not None) and (
+            len(self.state_info) >= self.states_limit
+        ):
+            self.state_info.pop(0)
         self.state_info.append(state_info)
 
 
@@ -123,5 +135,10 @@ if __name__ == "__main__":
     state_info = StateInfo(Decision.COOPERATE, Decision.BETRAY)
     print(state_info)  # 输出: 博弈状态信息(Decision(COOPERATE), Decision(BETRAY))
 
-    gs = GameStates([state_info, state_info])
+    gs = GameStates([state_info, state_info, state_info])
+
+    gs.append(StateInfo(Decision.BETRAY, Decision.COOPERATE))
+    gs.append(StateInfo(Decision.BETRAY, Decision.COOPERATE))
+    gs.append(StateInfo(Decision.BETRAY, Decision.COOPERATE))
+    gs.append(StateInfo(Decision.BETRAY, Decision.COOPERATE))
     gs.print_out()
