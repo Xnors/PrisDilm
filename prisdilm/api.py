@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum, auto
-from collections import namedtuple
+from typing import NamedTuple
 
 
 # 博弈决策枚举(合作/背叛)
@@ -20,7 +20,7 @@ class WhoAmI(Enum):
         return f"我方为({self.name})"
 
 
-class StateInfo(namedtuple("StateInfo", ["p1", "p2"])):
+class StateInfo(NamedTuple):
     """
     博弈状态信息类, 包含双方决策信息
     """
